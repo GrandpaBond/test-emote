@@ -1,7 +1,7 @@
 function tilt_face () {
     position = Math.round(Math.map(input.rotation(Rotation.Roll), -45, 45, 1, 9))
     if (position == 1) {
-        Emote.show_mouth(MOUTHS.FLAT)
+        Emote.show_eyes(EYES.OPEN)
     } else if (position == 2) {
         Emote.show_eyes(EYES.SAD)
     } else if (position == 3) {
