@@ -1,59 +1,90 @@
-function tilt_face () {
-    position = Math.round(Math.map(input.rotation(Rotation.Roll), -45, 45, 1, 9))
-    if (position == 1) {
-        Emote.show_eyes(EYES.OPEN)
-    } else if (position == 2) {
-        Emote.show_eyes(EYES.SAD)
-    } else if (position == 3) {
-        Emote.show_eyes(EYES.SHUT)
-    } else if (position == 4) {
-        Emote.show_eyes(EYES.MAD)
-    } else if (position == 5) {
-        Emote.show_eyes(EYES.UP)
-    } else if (position == 6) {
-        Emote.show_eyes(EYES.POP)
-    } else if (position == 7) {
-        Emote.show_eyes(EYES.LEFT)
-    } else if (position == 8) {
-        Emote.show_eyes(EYES.RIGHT)
-    } else if (position == 9) {
-        Emote.show_eyes(EYES.FLIP)
-        Emote.show_mouth(MOUTHS.FLIP)
-    } else {
-        basic.showIcon(IconNames.No)
+input.onButtonPressed(Button.A, function () {
+    while (input.buttonIsPressed(Button.A)) {
+        basic.pause(100)
     }
-    position = Math.round(Math.map(input.rotation(Rotation.Pitch), -30, 90, 1, 12))
-    if (position == 1) {
+    next_eyes()
+})
+input.onButtonPressed(Button.AB, function () {
+    while (input.buttonIsPressed(Button.AB)) {
+        basic.pause(100)
+    }
+    next_mood()
+})
+input.onButtonPressed(Button.B, function () {
+    while (input.buttonIsPressed(Button.B)) {
+        basic.pause(100)
+    }
+    next_mouth()
+})
+function next_eyes () {
+    if (flipped) {
         Emote.show_mouth(MOUTHS.FLAT)
-    } else if (position == 2) {
-        Emote.show_mouth(MOUTHS.OK)
-    } else if (position == 3) {
-        Emote.show_mouth(MOUTHS.GRIN)
-    } else if (position == 4) {
-        Emote.show_mouth(MOUTHS.SULK)
-    } else if (position == 5) {
-        Emote.show_mouth(MOUTHS.HMMM)
-    } else if (position == 6) {
-        Emote.show_mouth(MOUTHS.OPEN)
-    } else if (position == 7) {
-        Emote.show_mouth(MOUTHS.LEFT)
-    } else if (position == 8) {
-        Emote.show_mouth(MOUTHS.RIGHT)
-    } else if (position == 9) {
-        Emote.show_mouth(MOUTHS.SHOUT)
-    } else if (position == 10) {
-        Emote.show_mouth(MOUTHS.LAUGH)
-    } else if (position == 11) {
-        Emote.show_mouth(MOUTHS.KISS)
-    } else if (position == 12) {
+        flipped = false
+    }
+    if (eyes == 0) {
+        Emote.show_eyes(EYES.OPEN)
+    } else if (eyes == 1) {
+        Emote.show_eyes(EYES.SAD)
+    } else if (eyes == 2) {
+        Emote.show_eyes(EYES.SHUT)
+    } else if (eyes == 3) {
+        Emote.show_eyes(EYES.MAD)
+    } else if (eyes == 4) {
+        Emote.show_eyes(EYES.UP)
+    } else if (eyes == 5) {
+        Emote.show_eyes(EYES.POP)
+    } else if (eyes == 6) {
+        Emote.show_eyes(EYES.LEFT)
+    } else if (eyes == 7) {
+        Emote.show_eyes(EYES.RIGHT)
+    } else if (eyes == 8) {
+        Emote.show_eyes(EYES.WINK)
+    } else if (eyes == 9) {
         Emote.show_eyes(EYES.FLIP)
         Emote.show_mouth(MOUTHS.FLIP)
-    } else {
-        basic.showIcon(IconNames.No)
+        flipped = true
+        eyes = -1
     }
+    eyes += 1
+}
+function next_mouth () {
+    if (flipped) {
+        Emote.show_eyes(EYES.OPEN)
+        flipped = false
+    }
+    if (mouth == 0) {
+        Emote.show_mouth(MOUTHS.FLAT)
+    } else if (mouth == 1) {
+        Emote.show_mouth(MOUTHS.OK)
+    } else if (mouth == 2) {
+        Emote.show_mouth(MOUTHS.GRIN)
+    } else if (mouth == 3) {
+        Emote.show_mouth(MOUTHS.SULK)
+    } else if (mouth == 4) {
+        Emote.show_mouth(MOUTHS.HMMM)
+    } else if (mouth == 5) {
+        Emote.show_mouth(MOUTHS.OPEN)
+    } else if (mouth == 6) {
+        Emote.show_mouth(MOUTHS.LEFT)
+    } else if (mouth == 7) {
+        Emote.show_mouth(MOUTHS.RIGHT)
+    } else if (mouth == 8) {
+        Emote.show_mouth(MOUTHS.SHOUT)
+    } else if (mouth == 9) {
+        Emote.show_mouth(MOUTHS.LAUGH)
+    } else if (mouth == 10) {
+        Emote.show_mouth(MOUTHS.KISS)
+    } else if (mouth == 11) {
+        Emote.show_mouth(MOUTHS.SMIRK)
+    } else if (mouth == 12) {
+        Emote.show_eyes(EYES.FLIP)
+        Emote.show_mouth(MOUTHS.FLIP)
+        flipped = true
+        mouth = -1
+    }
+    mouth += 1
 }
 function next_mood () {
-    mood = (mood + 1) % 10
     if (mood == 0) {
         Emote.new_mood(MOODS.NONE)
     } else if (mood == 1) {
@@ -74,21 +105,29 @@ function next_mood () {
         Emote.new_mood(MOODS.TICKLE)
     } else if (mood == 9) {
         Emote.new_mood(MOODS.DEAD)
-    } else {
-        basic.showIcon(IconNames.No)
+        mood = -1
     }
-    basic.pause(12000)
+    basic.pause(10000)
     Emote.cease()
+    basic.pause(1000)
+    reset()
+    mood += 1
 }
-let position = 0
+function reset () {
+    eyes = 0
+    mouth = 0
+    flipped = true
+    basic.showLeds(`
+        . # . . .
+        # # . . .
+        . # . # .
+        . . . # #
+        . . . # .
+        `)
+}
+let mouth = 0
+let eyes = 0
+let flipped = false
 let mood = 0
-mood = -1
-basic.forever(function () {
-    if (input.buttonIsPressed(Button.A)) {
-        next_mood()
-    } else if (input.buttonIsPressed(Button.B)) {
-        tilt_face()
-    } else {
-        basic.showIcon(IconNames.Square)
-    }
-})
+reset()
+mood = 0

@@ -6,7 +6,7 @@
         "core": "*",
         "radio": "*",
         "microphone": "*",
-        "pxt-emote": "github:grandpabond/pxt-emote#v1.0.0"
+        "pxt-emote": "github:grandpabond/pxt-emote#master"
     },
     "files": [
         "main.blocks",
@@ -17,7 +17,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "5.1.21",
+        "target": "5.0.12",
         "targetId": "microbit"
     },
     "supportedTargets": [
